@@ -1,0 +1,54 @@
+LAB 5 Insufficient workflow validation
+
+Brief:
+	Laboratorium ini membuat asumsi yang keliru tentang urutan peristiwa dalam alur kerja pembelian.
+	
+	akun: wiener:peter
+
+Tujuan:
+	
+	Manfaatkan kelemahan ini untuk membeli jaket kulit “Lightweight l33t”.
+
+Analisa:
+
+	step awal adalah mengetahui bagaimana workflow pembeliaan di lab ini
+
+	1. login ke akun
+	
+	2. pilih produk lalu klik ke keranjangkan dan kirim request nya ke repeater
+
+		POST /cart 
+	
+	3. ke laman keranjang dam kirim request nya ke repeater
+
+		GET /cart
+
+	4. intercept checkout produk dan kirim request checkoutnya ke repeater
+
+		POST /cart/checkout	
+
+	5. intercept masih nyala, setelahnya ada request konfirmasi order lalu kirim ke repeater
+
+		GET /cart/order-confirmation?order-confirmed=true
+
+	jadi workflowny adalah
+
+		pelanggan menambahkan ke keranjang dengan request POST /cart 
+		lalu untuk mencheckout ada request 		  POST /cart/checkout
+		setelah itu ada request konfirmasi 		  GET /cart/order-confirmation?order-confirmed=true
+
+		Bagimana jadinya kalo kita tidak mengchecout dan membayar dulu akan tetapi langsung mengkonfirmasi orderan?
+	
+	6. ke request POST untuk menambahkan produk yang tadi di repeater 
+
+		ini untuk menambahkan produk
+
+	7. lalu ke request konfirmasi order dan kirim request dan ini berhasil, kita berhasil menskip pembelian dan langsung ke konfirmasi
+
+	dan kita telah menemukan kerentannya jadi step akhir adalah membeli produk yang dituju tanpa pembayaran
+
+	8. tambahkan produk ke keranjang
+
+	9. kirim rquest konfirmasi dan berhasil
+
+
