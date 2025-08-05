@@ -1,0 +1,46 @@
+LAB Infinite money logic flaw
+
+Brief:
+	lab ini cacat logika dalam workflow pembelian
+	
+	saldo akun: $100
+	
+Tujuan:
+	beli produk mahal yaitu "Lightweight l33t leather jacket" seharga $1300
+	
+Analisa:
+	web memberikan fitur untuk redeem card dan harus membeli dulu produk redeem cardnya lalu ada voucher discount 
+	
+	saldo = $100
+	redeem card = $10
+	diskon kupon = -30%
+	
+	ketika di reedem menambahkan $3
+	
+	nah otomasi proses ini sehingga saldo cukup untuk membeli produk yang dituju
+	
+exploit:
+	1. tambahkan produk reedm card ke keranjang    		POST /cart
+	
+	2. masukan voucher kupon diskon dengan request 		POST /cart/coupon
+	
+	3. lalu place order dengan request 	       		POST /cart/checkout
+	
+	4. setelah membeli ada request apa yang sudah dibeli	GET  /order-confirmation?orderded-confirmed=true
+	
+		req ini juga untuk menampilkan kode
+		giftcard nya di request ini
+		
+	5. masukan kode reedem di laman my account dengan req	POST /gift-card
+	
+		dan uang bertambah $3 dari 100
+		
+	ULANGI ATAU AUTOMASI HINGGA CUKUP UNTUK MEMBELI PRODUK YANG DITUJU
+	
+	6. menggunakan python
+	
+	7. setelah selesai uang bertambah menjadi $1400
+	
+	8. beli produk Lightweight l33t leather jacket
+	
+	9. dan selesai
