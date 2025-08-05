@@ -1,0 +1,57 @@
+Lab 6: Authentication bypass via flawed state machine
+
+Brief:
+	Laboratorium ini membuat asumsi yang keliru tentang urutan peristiwa dalam proses login.
+
+	akun: wiener:peter
+
+Tujuan:
+	Lewati proses autentikasi, akses panel admin, dan hapus user Carlos.
+
+Analisa:
+	step awal mengetahui dulu workflow loginnya
+
+		A. intercept nyala dan login ke akun wiener
+
+			requestnya: POST /login
+
+		B. setelah itu ada request memilih role akun
+
+			requestnya: GET /role-selector
+
+		C. pilih salah satu lalu kirim requestnya
+
+			requestnya POST /role-selector
+
+		D. lalu user masuk ke akun
+
+	jadi workflownya
+
+		user login dengan request: 		POST /login
+		laman role akun dengan request:  	GET /role-selector
+		user memilih role akun dengan request:	POST /role-selector
+		lalu user login
+
+	seletah dicoba untuk melewati request GET role dan Post role user tidak login dan tidak work
+	dicoba dengan mengisi diparameter dengan role=admin atau role=administrator hasilnya sama.
+
+exploitasi:
+
+	0. pergi ke /admin dan hanya bisa diakses oleh administrator
+
+	1. intercept login
+
+	2. kita coba mendrop request GET selector-role
+
+	3. setelah di drop
+
+	4. langsung ke GET / atau home atau di url /
+
+	5. dan boom kita jadi administrator dan ada panel admin
+
+	6. pergi ke panel admin
+
+	7. hapus carlos dan berhasil
+
+	
+	kerentanan ini mungkin terjadi karena request di drop di bagian selector role dan situs web tidak tahu cara menghandle ini.

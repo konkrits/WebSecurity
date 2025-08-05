@@ -1,0 +1,25 @@
+LAB 1 Flawed enforcement of business rules
+
+Brief:
+	lab ini cacat logika dalam pembelian produk.
+
+	akun: wiener:peter
+
+Tujuan:
+	beli produk 'Lightweight leet jacket' dengan harga tidak wajar
+
+Analisa:
+	lab ini memakai fitur diskon tetapi terdapat kerentanan di fitur itu
+	ketika memakain kode kupon yang sama 2 kali lab menampilkan pesan error bahwa kupon duplikat
+	tetapi ketika memakai kupon beda dan memakainya secara berurutan lab tidak memvalidasi ini
+
+		contoh: kupon = SIGNUP30 | dipakai secara dua kali -> error
+			kupon = NEWCUST5 | dipakai secara selang seling -> aman
+
+	dan itulah kerentannya
+
+	1. pilih produk yang dituju dan masukan ke keranjang
+
+	2. masukan berselingan 2 kupon hingga harga menjadi tidak wajar
+
+	3. berhasil
