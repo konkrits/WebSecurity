@@ -1,0 +1,88 @@
+LAB Authentication bypass via encryption oracle
+
+Brief:
+	lab ini menampilkan encryption oracle ke user
+	akun: wiener:peter
+
+Tujuan:
+	jadi admin dan hapus user carlos
+
+Analisa:
+	lab menampilkan enkripsi oracle ke user di fitur komentar ketika memasukan email yang error.
+	lab bisa mengenkripsi dengan di kolom komentar dan bisa mendekrip di notif error emai
+
+	1. Masuk dengan opsi “stay-logged-in” diaktifkan
+
+		GET /login 
+
+	2. Perhatikan bahwa cookie “stay-logged-in” dienkripsi.
+
+		 GET /my-account
+    
+	3. Perhatikan bahwa saat Anda mencoba mengirim komentar menggunakan alamat email yang tidak valid
+
+		POST /post/comment
+
+	4. respons akan menampilkan cookie pemberitahuan yang dienkripsi sebelum mengalihkan Anda ke posting blog.
+
+		GET /post?postid=7
+
+    	5. Perhatikan bahwa pesan kesalahan menampilkan input Anda dari parameter email dalam teks biasa:
+  
+    		Invalid email address: your-invalid-email
+
+	Simpulkan bahwa ini harus didekripsi dari cookie notifikasi. 
+
+	Kirim permintaan POST /post/comment dan permintaan GET /post?postId=7 (yang berisi cookie notifikasi) ke Burp Repeater.
+
+    		Di Repeater, perhatikan bahwa Anda dapat menggunakan parameter email permintaan POST untuk mengenkripsi data asal dan mencerminkan teks terenkripsi yang sesuai di header Set-Cookie. 
+		Demikian pula, Anda dapat menggunakan cookie pemberitahuan di permintaan GET untuk mendekripsi teks terenkripsi asal dan mencerminkan outputnya di pesan kesalahan. 
+		Untuk kesederhanaan, klik dua kali tab untuk setiap permintaan dan ganti nama tab menjadi encrypt dan decrypt masing-masing.
+
+    	6.Dalam permintaan decrypt, salin cookie stay-logged-in Anda dan tempelkan ke dalam cookie notifikasi. 
+
+		Kirim permintaan. Alih-alih pesan kesalahan, respons sekarang berisi cookie stay-logged-in yang telah didekripsi, 
+
+			misalnya:
+    
+				wiener:1598530205184
+
+
+ 	Ini menunjukkan bahwa cookie harus dalam format username:timestamp. Salin timestamp ke clipboard Anda.
+  
+   	7. Buka permintaan enkripsi dan ubah parameter email menjadi administrator:your-timestamp. Kirim permintaan dan salin cookie notifikasi baru dari respons.
+
+    	8. Dekripsi cookie baru ini dan perhatikan bahwa prefiks 23 karakter “Invalid email address: ” secara otomatis ditambahkan ke nilai apa pun yang Anda kirimkan menggunakan parameter email. 
+		
+		Kirim cookie notifikasi ke Burp Decoder.
+  
+   	 Di Decoder, URL-decode dan Base64-decode cookie tersebut.
+  
+    	9. Di Burp Repeater, beralih ke tab “Hex” di editor pesan. Pilih 23 byte pertama, lalu klik kanan dan pilih “Hapus byte yang dipilih”.
+
+    	10. Enkode ulang data dengan base64 
+
+	11. salin hasilnya ke cookie notifikasi permintaan dekripsi. Saat Anda mengirim permintaan, perhatikan bahwa pesan kesalahan menunjukkan bahwa algoritma enkripsi berbasis blok digunakan 
+		
+		dan panjang input harus kelipatan 16. Anda perlu menambahkan byte yang cukup pada prefiks “Invalid email address: ” sehingga jumlah byte yang akan dihapus adalah kelipatan 16.
+
+	12. Di Burp Repeater, kembali ke permintaan enkripsi dan tambahkan 9 karakter di awal nilai cookie yang dimaksud, misalnya:
+
+		xxxxxxxxxadministrator:your-timestamp
+
+   	13. Enkripsi input ini dan gunakan permintaan dekripsi untuk menguji apakah data tersebut dapat didekripsi dengan sukses.  
+    
+	Kirim teks terenkripsi baru ke Decoder, lalu URL dan Base64-decode-nya. Kali ini, hapus 32 byte dari awal data. Enkripsi ulang data
+
+	14. tempelkan ke parameter notifikasi dalam permintaan dekripsi. Periksa respons untuk memastikan bahwa input Anda berhasil didekripsi dan, yang terpenting, tidak lagi mengandung prefiks “Alamat email tidak valid: ”. Anda hanya akan melihat administrator:your-timestamp.  
+    
+	15. kirim permintaan GET / ke Burp Repeater. 
+
+		Hapus cookie sesi sepenuhnya, dan ganti cookie stay-logged-in dengan teks terenkripsi dari cookie buatan Anda sendiri. Kirim permintaan. 
+
+	16. Perhatikan bahwa Anda sekarang masuk sebagai administrator dan memiliki akses ke panel admin.
+
+    	17. Menggunakan Burp Repeater, buka /admin dan perhatikan opsi untuk menghapus pengguna. 
+
+	18. kirim /admin/delete?username=carlos untuk menyelesaikan lab.
+
