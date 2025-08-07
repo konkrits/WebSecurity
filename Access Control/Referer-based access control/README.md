@@ -2,12 +2,15 @@
 
 ### Beberapa situs web mendasarkan kontrol akses pada header Referer yang dikirimkan dalam permintaan HTTP. Header Referer dapat ditambahkan ke permintaan oleh browser untuk menunjukkan halaman mana yang memulai permintaan.
 
-Misalnya, aplikasi dengan kuat menegakkan kontrol akses atas halaman administrasi utama di /admin, tetapi untuk sub-halaman seperti /admin / deleteUer hanya memeriksa header Referer. 
+Misalnya, aplikasi dengan kuat menegakkan kontrol akses atas halaman administrasi utama di /admin, tetapi untuk sub-halaman seperti /admin / deleteUser hanya memeriksa header Referer. 
 Jika header Referel berisi URL /admin utama, maka permintaan diperbolehkan.
 
 ### Dalam hal ini, sundulan Referator dapat sepenuhnya dikendalikan oleh penyerang. Ini berarti bahwa mereka dapat menempa permintaan langsung ke sub-halaman sensitif dengan memasok header Referer yang diperlukan, 
 ### dan mendapatkan akses yang tidak sah.
 
+# Location-based access control
+
+### Some websites enforce access controls based on the user's geographical location. This can apply, for example, to banking applications or media services where state legislation or business restrictions apply. These access controls can often be circumvented by the use of web proxies, VPNs, or manipulation of client-side geolocation mechanisms. 
 
 # Lab: Referer-based access control
 
