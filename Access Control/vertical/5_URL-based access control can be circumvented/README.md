@@ -1,4 +1,4 @@
-# LAB 5 
+# LAB 5 URL-based access control can be circumvented
 
 ## Brief:
 ###	panel admin _/admin_, framework backend support X-Original-URL, akses diluar diblok
