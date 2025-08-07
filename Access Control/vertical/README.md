@@ -1,7 +1,7 @@
 # Vertical privilage escalation
 jika user biasa bisa mengakses fungsi yang tidak boleh mereka lakukan.
 	
-##		-FUNGSI YANG TIDAK DILINDUNGI 
+##		- FUNGSI YANG TIDAK DILINDUNGI 
 ### LAB1 Unprotected admin functionality
 contoh: jika aplikasi tidak melindungi halaman login admin maka user bisa pergi kehalaman admin dengan url yang relevan,
 
