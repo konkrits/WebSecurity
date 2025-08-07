@@ -1,4 +1,4 @@
-# LAB 1_unprotected admin functionality
+# LAB 1 unprotected admin functionality
 ## Brief:
 ### Lab punya halaman admin yang tidak dilindungi
 
