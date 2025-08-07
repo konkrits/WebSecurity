@@ -5,6 +5,7 @@
 	
 ## Tujuan:
 ###	dapatkan kunci API carlos
+<img width="1920" height="1032" alt="brief" src="https://github.com/user-attachments/assets/b221c2bc-e264-4cfe-80a7-2a856a04cec7" />
 	
 ## Analisa:
 ###	1. login dulu
