@@ -1,7 +1,7 @@
 # LAB 1 Stay Logged in
 
 ## Brief:
-### lab ini mengijinkam user untuk tetap login meskipun telah menutup sesi browsernya.
+### lab ini mengijinkan user untuk tetap login meskipun telah menutup sesi browsernya.
 ### masalahnya cookie dari fungsi ini vulnerable dengan brute-force
 ## Tujuan:
 ### Brute force cookie carlos dan login ke account nya
