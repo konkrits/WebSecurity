@@ -1,0 +1,214 @@
+# Vulnerabilities in password-based login
+
+Untuk situs web yang mengadopsi proses login berbasis kata sandi, pengguna mendaftar untuk akun itu sendiri atau mereka diberi akun oleh administrator. 
+Akun ini dikaitkan dengan nama pengguna yang unik dan kata sandi rahasia, yang dimasukkan pengguna dalam bentuk login untuk mengotentikasi diri mereka sendiri.
+
+Dalam skenario ini, fakta bahwa mereka tahu kata sandi rahasia diambil sebagai bukti yang cukup dari identitas pengguna. 
+Ini berarti bahwa keamanan situs web dikompromikan jika penyerang dapat memperoleh atau menebak kredensial login dari pengguna lain.
+
+Hal ini dapat dicapai dalam beberapa cara. Bagian berikut menunjukkan bagaimana penyerang dapat menggunakan serangan brute-force, dan beberapa kekurangan dalam perlindungan brute-force. 
+Anda juga akan belajar tentang kerentanan dalam otentikasi dasar HTTP.
+	
+## Brute-force attacks
+
+Serangan brute-force adalah ketika penyerang menggunakan sistem trial and error untuk menebak kredensial pengguna yang valid. 
+Serangan ini biasanya otomatis menggunakan wordlist nama pengguna dan kata sandi. Mengotomatisasi proses ini, terutama menggunakan alat khusus, 
+berpotensi memungkinkan penyerang untuk membuat sejumlah besar upaya login dengan kecepatan tinggi.
+
+Brute-forced tidak selalu hanya kasus membuat tebakan yang benar-benar acak pada nama pengguna dan kata sandi. 
+Dengan juga menggunakan logika dasar atau pengetahuan yang tersedia untuk umum, penyerang dapat menyempurnakan serangan brute-force untuk membuat tebakan yang jauh lebih terdidik. 
+Ini sangat meningkatkan efisiensi serangan tersebut. 
+
+Situs web yang mengandalkan login berbasis kata sandi sebagai satu-satunya metode otentikasi pengguna dapat sangat rentan jika mereka tidak menerapkan perlindungan brute-force yang cukup.
+	
+ ## Brute-forcing usernames
+	
+Nama pengguna sangat mudah ditebak jika sesuai dengan pola yang dapat dikenali, seperti alamat email. Misalnya, 
+sangat umum untuk melihat login bisnis dalam format:
+
+    firstname.lastname@somecompany.com. 
+    
+Namun, bahkan jika tidak ada pola yang jelas, 
+kadang-kadang bahkan akun dengan harga tinggi dibuat menggunakan nama pengguna yang dapat diprediksi, seperti admin atau administrator.
+
+Selama audit, periksa apakah situs web mengungkapkan nama pengguna potensial secara publik. 
+Misalnya, apakah Anda dapat mengakses profil pengguna tanpa masuk? Bahkan jika konten yang sebenarnya dari profil tersembunyi, 
+		
+nama yang digunakan dalam profil terkadang sama dengan nama pengguna login. Anda juga harus memeriksa tanggapan HTTP untuk melihat apakah ada alamat email yang diungkapkan. 
+
+Kadang-kadang, tanggapan berisi alamat email dari pengguna berprivilegungan tinggi, seperti administrator atau dukungan TI.
+	
+##	Brute-forcing passwords
+	
+Kata sandi juga dapat ditegakkan dengan kasar, dengan kesulitan bervariasi berdasarkan kekuatan kata sandi. Banyak situs web mengadopsi beberapa bentuk kebijakan kata sandi, 
+yang memaksa pengguna untuk membuat kata sandi entropi tinggi yang, setidaknya secara teoritis, lebih sulit untuk dipecahkan menggunakan brute-force saja. 
+		
+Ini biasanya melibatkan penegakan kata sandi dengan:
+
+- Jumlah minimal karakter
+- Campuran huruf huruf bawah dan atascase
+- Setidaknya satu karakter khusus
+
+Namun, sementara kata sandi entropi tinggi sulit bagi komputer saja untuk dipecahkan, kita dapat menggunakan pengetahuan dasar tentang perilaku manusia untuk mengeksploitasi 
+kerentanan yang tanpa disadari pengguna untuk memperkenalkan sistem ini. Daripada membuat kata sandi yang kuat dengan kombinasi karakter acak, 
+pengguna sering mengambil kata sandi yang dapat mereka ingat dan mencoba mengubahnya agar sesuai dengan kebijakan kata sandi. 
+Misalnya, jika mypassword tidak diperbolehkan, pengguna dapat mencoba sesuatu seperti:
+
+    Mypassword1! atau Myp4$$w0rd sebagai gantinya.
+
+Dalam kasus di mana kebijakan mengharuskan pengguna untuk mengubah kata sandi mereka secara teratur, 
+
+juga umum bagi pengguna untuk hanya membuat perubahan kecil yang dapat diprediksi pada kata sandi pilihan mereka. Misalnya, 
+
+    Mypassword1! menjadi Mypassword1? atau Mypassword2!.
+
+Pengetahuan tentang kredensial yang mungkin dan pola yang dapat diprediksi ini berarti bahwa serangan brute-force seringkali bisa jauh lebih canggih, dan karena itu efektif, daripada sekadar iterasi melalui setiap kombinasi karakter yang mungkin.
+	
+##	Username enumeration
+
+username enumeration adalah ketika penyerang dapat mengamati perubahan dalam perilaku situs web untuk mengidentifikasi apakah nama pengguna yang diberikan valid.
+
+Peningkatan nama pengguna biasanya terjadi pada halaman login, misalnya, ketika Anda memasukkan nama pengguna yang valid tetapi kata sandi yang salah, atau pada formulir pendaftaran ketika Anda memasukkan nama pengguna yang sudah diambil. Ini sangat mengurangi waktu dan upaya yang diperlukan untuk brute-memaksa login karena penyerang dapat dengan cepat menghasilkan daftar pendek nama pengguna yang valid.
+
+Saat mencoba untuk brute-force halaman login, Anda harus memberikan perhatian khusus pada setiap perbedaan dalam:
+
+- Kode status: 
+    		
+Selama serangan brute-force, kode status HTTP yang dikembalikan kemungkinan akan sama untuk sebagian besar tebakan karena sebagian besar dari mereka akan salah. 
+Jika tebakan mengembalikan kode status yang berbeda, ini adalah indikasi kuat bahwa nama pengguna itu benar. 
+Ini adalah praktik terbaik bagi situs web untuk selalu mengembalikan kode status yang sama terlepas dari hasilnya, tetapi praktik ini tidak selalu diikuti.
+	    		
+- Pesan kesalahan: 
+    		
+Terkadang pesan kesalahan yang dikembalikan berbeda tergantung pada apakah nama pengguna dan kata sandi tidak benar atau hanya kata sandi yang salah. 
+Ini adalah praktik terbaik bagi situs web untuk menggunakan pesan generik yang identik dalam kedua kasus, tetapi kesalahan pengetikan kecil terkadang merayap masuk. 
+Hanya satu karakter yang tidak pada tempatnya membuat dua pesan berbeda, bahkan dalam kasus di mana karakter tidak terlihat pada halaman yang diberikan.
+	    		
+-	Waktu respons: 
+    		
+Jika sebagian besar permintaan ditangani dengan waktu respons yang sama, apa pun yang menyimpang dari ini menunjukkan bahwa sesuatu yang berbeda terjadi di belakang layar. 
+Ini adalah indikasi lain bahwa nama pengguna yang ditebak mungkin benar. Misalnya, situs web hanya dapat memeriksa apakah kata sandi itu benar jika nama pengguna valid. 
+Langkah ekstra ini dapat menyebabkan sedikit peningkatan dalam waktu respons. Ini mungkin halus, tetapi penyerang dapat membuat penundaan ini lebih jelas 
+dengan memasukkan kata sandi yang terlalu panjang yang tampak lebih lama untuk ditangani oleh situs web.
+	
+#####	1. (LAB) Username enumeration via different responses
+#####	2. (LAB) Username enumeration via subtly different responses
+#####	3. (LAB) Username enumeration via response timing
+
+## Flawed Brute-force Protection
+
+### (LAB 1 Broken brute-force protection, IP block)
+
+Sangat mungkin bahwa serangan brute-force akan melibatkan banyak tebakan yang gagal sebelum penyerang berhasil mengkompromikan akun. 
+Logikanya, perlindungan brute-force berputar di sekitar mencoba membuatnya sesulit mungkin untuk mengotomatisasi proses dan memperlambat tingkat di mana penyerang dapat mencoba login.
+
+##### Dua cara yang paling umum untuk mencegah serangan brute-force adalah:
+
+- Mengunci akun yang pengguna jarak jauh coba akses jika mereka melakukan terlalu banyak upaya login yang gagal.
+- Memblokir alamat IP pengguna jarak jauh jika mereka melakukan terlalu banyak upaya login secara berurutan
+
+Kedua pendekatan menawarkan berbagai tingkat perlindungan, tetapi tidak dapat secara kekebalan, terutama jika diterapkan menggunakan logika yang cacat.
+
+Misalnya, Anda mungkin kadang-kadang menemukan bahwa IP Anda diblokir jika Anda gagal masuk terlalu sering. 
+
+Dalam beberapa implementasi, 
+counter untuk jumlah upaya gagal diatur ulang jika pemilik IP login berhasil. Ini berarti penyerang hanya harus masuk ke akun mereka sendiri setiap beberapa upaya untuk mencegah batas ini tercapai.
+
+Dalam hal ini, hanya memasukkan kredensial login Anda sendiri secara berkala sepanjang daftar kata sudah cukup untuk membuat pertahanan ini hampir tidak berguna.
+
+##	Account locking
+  	
+###  (LAB 2 Username enumeration via account lock)
+
+Salah satu cara di mana situs web mencoba untuk mencegah brute-forcecing adalah dengan mengunci akun jika kriteria mencurigakan tertentu terpenuhi, 
+biasanya sejumlah upaya login yang gagal. Sama seperti kesalahan login normal, tanggapan dari server yang menunjukkan bahwa akun terkunci juga dapat membantu penyerang untuk menyebutkan nama pengguna.
+	
+##### Misalnya, metode berikut dapat digunakan untuk bekerja di sekitar perlindungan semacam ini:
+		
+- Tetapkan daftar nama pengguna kandidat yang mungkin valid. 
+			
+     Ini bisa melalui pencacahan nama pengguna atau hanya berdasarkan daftar nama pengguna umum.
+				
+- Putuskan daftar kata sandi yang sangat kecil yang menurut Anda mungkin dimiliki setidaknya satu pengguna. 
+			
+     Yang terpenting,
+     jumlah kata sandi yang Anda pilih tidak boleh melebihi jumlah upaya login yang diizinkan. 
+     Misalnya, jika Anda telah menghitung batas itu adalah 3 upaya, Anda harus memilih maksimal 3 tebakan kata sandi.
+				
+- Menggunakan alat seperti Burp Intruder, 
+			
+     cobalah masing-masing password yang dipilih dengan masing-masing nama pengguna kandidat. 
+     Dengan cara ini, Anda dapat mencoba untuk brute-force setiap akun tanpa memicu kunci akun. 
+     Anda hanya perlu satu pengguna untuk menggunakan salah satu dari tiga password untuk mengkompromikan akun.
+
+##### Pemblokiran akun juga tidak dapat melindungi dari serangan credential stuffing. 
+
+Serangan ini melibatkan penggunaan dictionary berisi pasangan nama 
+
+    username:password 
+    
+yang terdiri dari kredensial login asli yang dicuri dalam kebocoran data. 
+		
+Serangan credential stuffing memanfaatkan fakta bahwa banyak orang menggunakan kembali nama pengguna dan kata sandi yang sama di berbagai situs web, 
+sehingga ada kemungkinan beberapa kredensial yang terkompromi dalam kamus tersebut juga valid di situs web target. 
+		
+Penguncian akun tidak melindungi dari serangan credential stuffing karena setiap nama pengguna hanya dicoba sekali. 
+Serangan credential stuffing sangat berbahaya karena kadang-kadang dapat mengakibatkan penyerang mengkompromikan banyak akun berbeda dengan hanya satu serangan otomatis.
+
+##	User rate limiting
+	
+Cara lain situs web mencoba untuk mencegah serangan brute-force adalah melalui pembatasan tingkat pengguna. 
+Dalam hal ini, membuat terlalu banyak permintaan login dalam waktu singkat menyebabkan alamat IP Anda diblokir. 
+		
+##### Biasanya, IP hanya dapat dibuka dengan salah satu cara berikut:
+					
+ - Automatically after a certain period of time has elapsed
+ - Manually by an administrator
+ - Manually by the user after successfully completing a CAPTCHA
+
+user rate limiting terkadang lebih disukai daripada penguncian akun karena kurang rentan terhadap username enumeration dan denial of service 
+Namun, itu masih belum sepenuhnya aman. Seperti yang kita lihat contoh di laboratorium sebelumnya, 
+ada beberapa cara penyerang dapat memanipulasi IP mereka yang jelas untuk melewati blok.
+	
+Karena batas ini didasarkan pada laju permintaan HTTP yang dikirim dari alamat IP pengguna, terkadang juga dimungkinkan untuk membypass pertahanan ini 
+jika Anda dapat menemukan cara untuk menebak beberapa kata sandi dengan satu permintaan.
+
+##	HTTP basic authentication
+
+Meskipun cukup tua, kesederhanaan dan kemudahan implementasinya yang relatif berarti Anda terkadang melihat otentikasi dasar HTTP digunakan. 
+Dalam otentikasi dasar HTTP, klien menerima token otentikasi dari server, yang dibangun dengan rangko nama pengguna dan kata sandi, dan mengkodekannya di Base64. 
+Token ini disimpan dan dikelola oleh browser, yang secara otomatis menambahkannya ke header Authorization dari setiap permintaan berikutnya sebagai berikut:
+
+    Authorization: Basic base64(username:password)
+
+Untuk sejumlah alasan, ini umumnya tidak dianggap sebagai metode otentikasi yang aman. 
+Pertama, ini melibatkan berulang kali mengirim kredensial login pengguna dengan setiap permintaan. 
+Kecuali situs web juga menerapkan HTSS, kredensial pengguna terbuka untuk ditangkap dalam serangan man-in-the-middle.
+
+Selain itu, implementasi otentikasi dasar HTTP sering tidak mendukung perlindungan brute-force. Karena token terdiri secara eksklusif dari nilai statis, ini dapat membuatnya rentan menjadi brute-forced.
+
+Otentikasi dasar HTTP juga sangat rentan terhadap eksploitasi terkait sesi, terutama CSRF, yang tidak menawarkan perlindungan sendiri.
+
+Dalam beberapa kasus, mengeksploitasi otentikasi dasar HTTP yang rentan mungkin hanya memberikan akses penyerang ke halaman yang tampaknya tidak menarik. 
+Namun, selain menyediakan permukaan serangan lebih lanjut, kredensial yang terpapar dengan cara ini dapat digunakan kembali dalam konteks lain yang lebih rahasia.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
