@@ -6,7 +6,7 @@
 #####		- managemen sesi mengidentifikasi apakah http request masih dibuat oleh user yang sama
 #####		- Kontrol akses menentukan apakah pengguna diizinkan untuk melakukan tindakan yang mereka coba lakukan.
 		
-## Verikal akses kontrol
+## Vertikal akses kontrol
 
 #####	adalah mekanisme yang membatasi akses senstif pada beberapa tipe user. bayangkan seperti segitiga makin ke atas makin tinggi kontrol ke bawah
 
