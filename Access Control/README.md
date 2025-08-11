@@ -26,4 +26,4 @@
 #####	 - Kecuali sumber daya dimaksudkan untuk dapat diakses publik, menolak akses secara default.
 #####	 - Jika memungkinkan, gunakan mekanisme aplikasi tunggal untuk menegakkan kontrol akses.
 #####	 - Pada tingkat kode, pastikan bagi pengembang untuk menyatakan akses yang diizinkan untuk setiap sumber daya, dan menolak akses secara default.
-#####	 - Mengitiru dan menguji kontrol akses secara menyeluruh untuk memastikan mereka bekerja seperti yang dirancang.
+#####	 - Meniru dan menguji kontrol akses secara menyeluruh untuk memastikan mereka bekerja seperti yang dirancang.
