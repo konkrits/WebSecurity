@@ -3,6 +3,7 @@
 ## Brief:
 
 Lab ini rentan ssrf di check stock
+<img width="1922" height="1046" alt="brief" src="https://github.com/user-attachments/assets/9dbe21e0-ddba-411a-96b5-237038022aa6" />
 	
 ## Tujuan:
 	
