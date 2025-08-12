@@ -3,6 +3,7 @@
 ## Brief:
 
 Lab ini memfetch stok dengan internal sistem
+<img width="1920" height="1032" alt="LAB 3" src="https://github.com/user-attachments/assets/25296643-acb4-475d-ac43-f97537fb1c43" />
 	
 ## Tujuan:
 	
