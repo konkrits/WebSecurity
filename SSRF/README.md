@@ -141,6 +141,7 @@ menggunakan metode ini:
 	Anda dapat menggunakan kombinasi teknik-teknik ini secara bersamaan.
 
 ## Bypassing SSRF filters via open redirection
+#### LAB 5 SSRF with filter bypass via open redirection vulnerability
 
 Kadang-kadang dimungkinkan untuk memotong pertahanan berbasis filter dengan mengeksploitasi open redirect.
 
@@ -166,12 +167,12 @@ sebagai berikut:
 		stockApi=http://weliketoshop.net/product/nextProductI?currentProductId=6&path=http://192.168.0.68/admin
 
 Eksploitasi SSRF ini berfungsi karena aplikasi pertama kali memvalidasi bahwa URL stockAPI yang disediakan ada pada domain yang diizinkan. 
-	Aplikasi kemudian meminta URL yang disediakan, yang memicu pengalihan terbuka. Ini mengikuti pengalihan, dan membuat permintaan ke URL internal yang dipilih penyerang.
+Aplikasi kemudian meminta URL yang disediakan, yang memicu pengalihan terbuka. Ini mengikuti pengalihan, dan membuat permintaan ke URL internal yang dipilih penyerang.
 
 
 Menemukan permukaan serangan tersembunyi untuk kerentanan SSRF
 
-	Banyak model forgery permintaan server mudah ditemukan, karena lalu lintas normal aplikasi melibatkan parameter permintaan yang berisi URL lengkap. Contoh lain dari SSRF lebih sulit ditemukan.
+Banyak model forgery permintaan server mudah ditemukan, karena lalu lintas normal aplikasi melibatkan parameter permintaan yang berisi URL lengkap. Contoh lain dari SSRF lebih sulit ditemukan.
 
   - URL parsial dalam permintaan
 
