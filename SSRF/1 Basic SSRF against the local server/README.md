@@ -2,6 +2,8 @@
 
 ## Brief:
 web mengambil data stok produk di internal system yang dimana itu rentan ssrf 
+
+<img width="1920" height="1032" alt="LAB1" src="https://github.com/user-attachments/assets/92c5c1ec-7929-4ee7-a181-988844eb58b7" />
 	
 ## Tujuan:
 Akses admin panel di 
