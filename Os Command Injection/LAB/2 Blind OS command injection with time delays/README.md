@@ -7,6 +7,8 @@ web ini punya kerentanan blind command os injection di feedback, response nya ti
 ## Tujuan:
 
 sebabkan delay selama 10 detik
+
+<img width="1922" height="1046" alt="Brief" src="https://github.com/user-attachments/assets/d3c7b47a-6550-435d-92a6-a822caf2bc2b" />
 	
 ## Analisa:
 
