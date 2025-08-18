@@ -2,6 +2,7 @@
 
 ## brief:
 os command injection di produk stok
+<img width="1922" height="1046" alt="Brief" src="https://github.com/user-attachments/assets/68ca31af-91a5-4eb0-87fd-904a538f1d0a" />
 	
 ## Tujuan:
 eksekusi perintah whoami
