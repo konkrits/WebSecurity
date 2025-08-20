@@ -5,6 +5,8 @@ tipe file bisa dibypass via klasik obfuscation technique
 	
 ## Tujuan:
 dapatkan /home/carlos/secret
+
+<img width="1922" height="1046" alt="brief" src="https://github.com/user-attachments/assets/5173f4e6-24a0-4926-b813-8a5963bc252f" />
 	
 ## Analisa:
 
