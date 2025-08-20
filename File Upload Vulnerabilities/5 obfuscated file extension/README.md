@@ -1,4 +1,4 @@
-# LAB 4 extension blacklist bypass
+# LAB 5 Obfuscated file extension
 
 ## Brief:
 tipe file bisa dibypass via klasik obfuscation technique
