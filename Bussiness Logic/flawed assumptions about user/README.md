@@ -1,0 +1,89 @@
+# Membuat asumsi yang salah tentang perilaku pengguna
+
+Salah satu akar penyebab paling umum dari kerentanan logika adalah membuat asumsi yang salah tentang perilaku pengguna. 
+	Hal ini dapat menyebabkan berbagai masalah di mana pengembang belum mempertimbangkan skenario yang berpotensi berbahaya yang melanggar asumsi ini. 
+	Pada bagian ini, kami akan memberikan beberapa contoh peringatan asumsi umum yang harus dihindari dan menunjukkan bagaimana mereka dapat menyebabkan cacat logika yang berbahaya.
+	
+## Pengguna tepercaya tidak akan selalu tetap dapat dipercaya
+
+	  (LAB 1 Inconsistent security controls )
+
+
+Aplikasi mungkin tampak aman karena mereka menerapkan langkah-langkah yang tampaknya kuat untuk menegakkan aturan bisnis. 
+	Sayangnya, beberapa aplikasi membuat kesalahan dengan mengasumsikan bahwa, setelah melewati kontrol ketat ini pada awalnya, 
+	pengguna dan data mereka dapat dipercaya tanpa batas waktu. Hal ini dapat mengakibatkan penegakan kontrol yang relatif longgar dari titik yang sama pada saat itu.
+
+Jika aturan bisnis dan langkah-langkah keamanan tidak diterapkan secara konsisten di seluruh aplikasi, 
+	ini dapat menyebabkan celah yang berpotensi berbahaya yang dapat dieksploitasi oleh penyerang.
+	
+## Pengguna tidak selalu akan memasukkan data yang wajib.
+
+	  (LAB 2 Weak isolation on dual-use endpoint)
+	  (LAB 3 Password reset broken logic)
+	
+Salah satu kesalahpahaman adalah bahwa pengguna selalu akan mengisi nilai untuk bidang input yang wajib. 
+	 browser mungkin mencegah pengguna biasa mengirimkan formulir tanpa input yang diperlukan, 
+	 tetapi seperti yang kita ketahui, penyerang dapat memanipulasi parameter selama transmisi. Hal ini bahkan dapat meliputi penghapusan parameter secara keseluruhan.
+
+Ini menjadi masalah khusus dalam kasus di mana beberapa fungsi diimplementasikan dalam skrip server-side yang sama. 
+	Dalam hal ini, kehadiran atau ketidakhadiran parameter tertentu dapat menentukan kode mana yang dieksekusi. 
+	Menghapus nilai parameter dapat memungkinkan penyerang mengakses jalur kode yang seharusnya tidak dapat dijangkau.  
+
+Saat memeriksa kelemahan logika, Anda harus mencoba menghapus setiap parameter secara bergantian dan mengamati efeknya pada respons. 
+
+Pastikan untuk:  
+
+- Hanya menghapus satu parameter sekaligus untuk memastikan semua jalur kode yang relevan tercapai.
+   
+- Coba hapus nama parameter beserta nilainya. Server biasanya menangani kedua kasus tersebut secara berbeda.
+ 
+- Ikuti proses multi-tahap hingga selesai. Terkadang, memanipulasi parameter pada satu langkah dapat memengaruhi langkah lain yang lebih jauh dalam alur kerja.
+
+Hal ini berlaku untuk parameter URL dan POST, tetapi jangan lupa untuk memeriksa cookie juga. 
+	Proses sederhana ini dapat mengungkap perilaku aplikasi yang aneh dan mungkin dapat dieksploitasi.
+
+## Pengguna tidak selalu mengikuti urutan yang dimaksud.
+	
+	(LAB 4 2FA simple bypass)
+	
+Banyak transaksi bergantung pada alur kerja yang telah ditentukan sebelumnya, yang terdiri dari serangkaian langkah. 
+	Antarmuka web biasanya akan memandu pengguna melalui proses ini, membawa mereka ke langkah berikutnya dalam alur kerja setiap kali mereka menyelesaikan langkah saat ini. 
+	Namun, penyerang tidak selalu mengikuti urutan yang dimaksudkan. Gagal memperhitungkan kemungkinan ini dapat menyebabkan celah keamanan yang berbahaya dan relatif mudah dieksploitasi.
+
+Misalnya, banyak situs web yang menerapkan otentikasi dua faktor (2FA) mengharuskan pengguna untuk login di satu halaman sebelum memasukkan kode verifikasi di halaman terpisah. 
+	Mengasumsikan bahwa pengguna akan selalu mengikuti proses ini hingga selesai dan, sebagai akibatnya, tidak memverifikasi bahwa mereka melakukannya, dapat memungkinkan penyerang untuk melewati langkah 2FA sepenuhnya.
+
+	(LAB 5 Insufficient workflow validation)
+	(LAB 6 Authentication bypass via flawed state machine)	
+
+Membuat asumsi tentang urutan peristiwa dapat menyebabkan berbagai masalah, bahkan dalam alur kerja atau fungsi yang sama. Dengan menggunakan alat seperti Burp Proxy dan Repeater, 
+	setelah penyerang melihat sebuah permintaan, mereka dapat mengulanginya sesuka hati dan menggunakan forced browsing untuk melakukan interaksi apa pun dengan server dalam urutan apa pun yang mereka inginkan.
+
+Hal ini memungkinkan mereka untuk melakukan tindakan berbeda sementara aplikasi berada dalam keadaan yang tidak terduga.
+
+Untuk mengidentifikasi jenis kelemahan ini, Anda harus menggunakan forced browsing untuk mengirimkan permintaan dalam urutan yang tidak dimaksudkan.
+ 
+Misalnya, Anda mungkin melewatkan langkah tertentu, mengakses langkah tunggal lebih dari sekali, kembali ke langkah sebelumnya, dan sebagainya. 
+
+Perhatikan bagaimana langkah-langkah yang berbeda diakses. Meskipun Anda sering hanya mengirimkan permintaan GET atau POST ke URL tertentu, 
+
+terkadang Anda dapat mengakses langkah-langkah dengan mengirimkan set parameter yang berbeda ke URL yang sama. Seperti halnya semua kelemahan logika, 
+		cobalah untuk mengidentifikasi asumsi apa yang telah dibuat oleh pengembang dan di mana permukaan serangan berada. Anda kemudian dapat mencari cara untuk melanggar asumsi-asumsi tersebut.
+
+Perlu diingat bahwa jenis pengujian ini seringkali menyebabkan pengecualian karena variabel yang diharapkan memiliki nilai null atau belum diinisialisasi. 
+	Sampai pada lokasi dalam keadaan yang sebagian didefinisikan atau tidak konsisten juga kemungkinan besar akan menyebabkan aplikasi memberikan peringatan. 
+	Dalam hal ini, pastikan untuk memperhatikan dengan cermat pesan kesalahan atau informasi debug yang Anda temui. 
+
+Ini dapat menjadi sumber informasi yang berharga, yang dapat membantu Anda menyempurnakan serangan dan memahami
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
