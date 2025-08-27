@@ -1,6 +1,10 @@
 # Stored XSS
 
-## stored cross-site scripting	(LAB 1 Stored XSS into HTML context with nothing encoded)
+## stored cross-site scripting
+
+> LAB 1 Stored XSS into HTML context with nothing encoded
+>
+> https://github.com/konkrits/WebSecurity/tree/main/XSS/stored/1%20Stored%20XSS%20into%20HTML%20context%20with%20nothing%20encoded
 
 Skrip lintas situs yang disimpan (juga dikenal sebagai pesanan kedua atau XSS persisten) muncul ketika aplikasi menerima data dari sumber yang tidak tepercaya 
 	dan menyertakan data tersebut dalam respons HTTP yang lebih baru dengan cara yang tidak aman.
