@@ -45,6 +45,9 @@ Sifat mandiri dari eksploitasi skrip lintas situs yang disimpan sangat relevan d
 	Jika XSS tercermin, maka serangan harus ditepat waktu: pengguna yang diinduksi untuk membuat permintaan penyerang pada saat mereka tidak masuk tidak akan dikompromikan. 
 	Sebaliknya, jika XSS disimpan, maka pengguna dijamin akan masuk pada saat mereka menemukan exploit
 
+ Baca lebih lengkap:
+ > https://portswigger.net/web-security/cross-site-scripting/exploiting
+
 ## How to find and test for stored XSS vulnerabilities
 
 Pengujian untuk kerentanan XSS yang tersimpan secara manual dapat menjadi tantangan. 
