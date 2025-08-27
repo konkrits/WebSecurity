@@ -5,6 +5,8 @@ fungsi rentan di komentar
 	
 ## Tujuan:
 gunakan alert() untuk menyelasaikan lab
+
+<img width="936" height="511" alt="brief" src="https://github.com/user-attachments/assets/d72b6840-dc78-4e7b-84e0-814358c5fd06" />
 	
 ## Analisa:
 1. pergi ke kolom komentar dan masukan payload
