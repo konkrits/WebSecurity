@@ -47,7 +47,8 @@ di alam bebas bisa menjadi proses yang membosankan, sering kali mengharuskan And
  
 ## Memanfaatkan DOM XSS dengan sumber dan sink yang berbeda
  
-> (LAB 1 document.write sink using source location.search)
+> LAB 1 document.write sink using source location.search
+> 
 > https://github.com/konkrits/WebSecurity/tree/main/XSS/DOM/1%20documentwrite%20sink%20using%20source%20locationsearch
 >  
 Pada prinsipnya, sebuah situs web rentan terhadap skrip lintas situs berbasis DOM jika ada jalur yang dapat dieksekusi di mana data dapat menyebar dari sumber ke sink. 
@@ -59,12 +60,16 @@ Sink document.write bekerja dengan elemen skrip, sehingga Anda dapat menggunakan
 	 
 	document.write('... <script>alert(document.domain)</script> ...');
 	 	
-> (LAB 2 document.write sink using source location.search inside a select element)
+> LAB 2 document.write sink using source location.search inside a select element
+> 
+> https://github.com/konkrits/WebSecurity/tree/main/XSS/DOM/2%20documentwrite%20sink%20using%20source%20locationsearch%20inside%20a%20select%20element
  	 	
 Perhatikan, bagaimanapun, bahwa dalam beberapa situasi konten yang ditulis untuk mendokumentasikan. menulis mencakup beberapa konteks di sekitarnya yang perlu Anda perhitungkan dalam eksploitasi Anda. 
  	Misalnya, Anda mungkin perlu menutup beberapa elemen yang ada sebelum menggunakan muatan JavaScript Anda.
  
-> (LAB 3 innerHTML sink using source location.search)
+> LAB 3 innerHTML sink using source location.search
+> 
+> https://github.com/konkrits/WebSecurity/tree/main/XSS/DOM/3%20innerHTML%20sink%20using%20source%20locationsearch
  
 Sink innerHTML tidak menerima elemen skrip pada peramban modern mana pun, dan juga tidak akan menjalankan event svg onload. 
   	Ini berarti Anda harus menggunakan elemen alternatif seperti img atau iframe. Penangan peristiwa seperti onload dan onerror dapat digunakan bersama dengan elemen-elemen ini. Sebagai contoh:
@@ -73,7 +78,9 @@ Sink innerHTML tidak menerima elemen skrip pada peramban modern mana pun, dan ju
  
 ## Sources and sinks in third-party dependencies 
 
-> (LAB 4 jQuery anchor href attribute sink using location.search source)
+> LAB 4 jQuery anchor href attribute sink using location.search source
+> 
+> https://github.com/konkrits/WebSecurity/tree/main/XSS/DOM/4%20jQuery%20anchor%20href%20attribute%20sink%20using%20locationsearch%20source
 
 Aplikasi web modern biasanya dibangun menggunakan sejumlah pustaka dan kerangka kerja pihak ketiga, 
 	yang seringkali menyediakan fungsi dan kapabilitas tambahan bagi pengembang. Penting untuk diingat bahwa beberapa di antaranya juga merupakan sumber dan sink potensial untuk DOM XSS.
@@ -94,7 +101,9 @@ Anda dapat memanfaatkan ini dengan memodifikasi URL sehingga sumber location.sea
 
 	?returnUrl=javascript:alert(document.domain)
 
-> (LAB 5  jQuery selector sink using a hashchange event)
+> LAB 5  jQuery selector sink using a hashchange event
+> 
+> https://github.com/konkrits/WebSecurity/tree/main/XSS/DOM/5%20%20jQuery%20selector%20sink%20using%20a%20hashchange%20event
  
 Sink potensial lain yang perlu diwaspadai adalah fungsi pemilih $() milik jQuery, yang dapat digunakan untuk menyuntikkan objek berbahaya ke dalam DOM.
 
@@ -126,7 +135,9 @@ Catatan:
 
 ## DOM XSS dalam AngularJS
 
-> (LAB 6 DOM XSS in AngularJS expression with angle brackets and double quotes HTML-encoded)
+> LAB 6 DOM XSS in AngularJS expression with angle brackets and double quotes HTML-encoded
+> 
+> https://github.com/konkrits/WebSecurity/tree/main/XSS/DOM/6%20AngularJS%20expression%20with%20angle%20brackets%20and%20double%20quotes%20HTML-encoded
 
 Jika kerangka kerja seperti AngularJS digunakan, dimungkinkan untuk mengeksekusi JavaScript tanpa kurung sudut atau peristiwa. 
 	Ketika sebuah situs menggunakan atribut ng-app pada elemen HTML, itu akan diproses oleh AngularJS. Dalam hal ini, 
@@ -134,7 +145,9 @@ Jika kerangka kerja seperti AngularJS digunakan, dimungkinkan untuk mengeksekusi
 
 ## DOM XSS combined with reflected and stored data
 
-> (LAB 7 Reflected DOM XSS)
+> LAB 7 Reflected DOM XSS
+> 
+> https://github.com/konkrits/WebSecurity/tree/main/XSS/DOM/7%20Reflected%20DOM%20XSS
 
 Beberapa kerentanan berbasis DOM murni bersifat mandiri dalam satu halaman. Jika skrip membaca data dari URL dan menuliskannya ke sink berbahaya, 
 	 maka kerentanan tersebut sepenuhnya berada di sisi klien.
@@ -149,6 +162,8 @@ Dalam kerentanan DOM XSS yang direfleksikan, server memproses data dari perminta
 	eval('var data = "reflected string"');
 
 > LAB 8 Stored DOM XSS
+> 
+> https://github.com/konkrits/WebSecurity/tree/main/XSS/DOM/8%20Stored%20DOM
 
 Situs web juga dapat menyimpan data di server dan menampilkannya di tempat lain. Dalam kerentanan XSS DOM yang disimpan, server menerima data dari satu permintaan, menyimpannya, 
  dan kemudian menyertakan data tersebut dalam respons berikutnya. Skrip dalam respons berikutnya mengandung sink yang kemudian memproses data tersebut dengan cara yang tidak aman.
