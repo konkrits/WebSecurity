@@ -1,4 +1,4 @@
-# Lab 7 Stored DOM XSS
+# Lab 8 Stored DOM XSS
 
 ## Brief:
 web rentan stored DOM di comment blog
