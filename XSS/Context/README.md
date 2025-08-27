@@ -1,0 +1,245 @@
+# Konteks scripting lintas situs
+
+Ketika pengujian untuk XSS yang dipantulkan dan disimpan, tugas utama adalah mengidentifikasi konteks XSS:
+
+- Lokasi dalam respon di mana data yang dapat dikontrol penyerang muncul.
+- Setiap validasi input atau pemrosesan lain yang sedang dilakukan pada data tersebut oleh aplikasi.
+
+	Berdasarkan rincian ini, Anda kemudian dapat memilih satu atau lebih gaji XSS kandidat, dan menguji apakah itu efektif.
+	
+## XSS between HTML tags
+
+When the XSS context is text between HTML tags, you need to introduce some new HTML tags designed to trigger execution of JavaScript.
+
+Some useful ways of executing JavaScript are:
+	
+	<script>alert(document.domain)</script>
+	<img src=1 onerror=alert(1)>	
+		
+> LAB Reflected XSS into HTML context with most tags and attributes blocked
+	
+> LAB Reflected XSS into HTML context with all tags blocked except custom ones
+
+> LAB Reflected XSS with event handlers and href attributes blocked
+
+> LAB Reflected XSS with some SVG markup allowed
+
+## XSS in HTML tag attributes	
+	
+> LAB Reflected XSS into attribute with angle brackets HTML-encoded	
+	
+When the XSS context is into an HTML tag attribute value, you might sometimes be able to terminate the attribute value, close the tag, and introduce a new one. 
+	
+For example:
+		
+	"><script>alert(document.domain)</script>
+
+More commonly in this situation, angle brackets are blocked or encoded, so your input cannot break out of the tag in which it appears. 
+		Provided you can terminate the attribute value, you can normally introduce a new attribute that creates a scriptable context, such as an event handler. 
+
+For example:
+
+	" autofocus onfocus=alert(document.domain) x="
+
+The above payload creates an onfocus event that will execute JavaScript when the element receives the focus, and also adds the autofocus attribute to try to trigger the onfocus event 
+		automatically without any user interaction. Finally, it adds x=" to gracefully repair the following markup.
+		
+  ## LAB Stored XSS into anchor href attribute with double quotes HTML-encoded	
+	
+Kadang-kadang konteks XSS adalah menjadi jenis atribut tag HTML yang dengan sendirinya dapat membuat konteks scriptable. Di sini, 
+	Anda dapat mengeksekusi JavaScript tanpa perlu menghentikan nilai atribut.
+	Misalnya, jika konteks XSS menjadi atribut href dari tag jangkar, Anda dapat menggunakan javascript pseudo-protocol untuk mengeksekusi skrip. 
+	
+Sebagai contoh:
+
+    <a href="javascript:alert(document.domain)">
+	
+	
+  LAB Reflected XSS in canonical link tag
+	
+Anda mungkin menemukan situs web yang mengkodekan tanda kurung sudut tetapi masih memungkinkan Anda untuk menyuntikkan atribut. Kadang-kadang, 
+	suntikan ini dimungkinkan bahkan dalam tag yang biasanya tidak menyala secara otomatis, seperti tag kanonik. 
+	Anda dapat memanfaatkan perilaku ini menggunakan kunci akses dan interaksi pengguna di Chrome. Tombol akses memungkinkan Anda untuk memberikan pintasan keyboard yang merujuk pada elemen tertentu. 
+	Atribut accesskey memungkinkan Anda untuk menentukan huruf yang, ketika ditekan dalam kombinasi dengan kunci lain (ini bervariasi di berbagai platform), 
+	akan menyebabkan peristiwa untuk menembak. 
+	Di laboratorium berikutnya Anda dapat bereksperimen dengan kunci akses dan mengeksploitasi tag kanonik.
+	
+	
+## XSS into JavaScript
+
+ Terminating the existing script
+	
+> LAB Reflected XSS into a JavaScript string with single quote and backslash escaped
+
+Dalam kasus yang paling sederhana, adalah mungkin untuk hanya menutup tag skrip yang melampirkan JavaScript yang ada, dan memperkenalkan beberapa tag HTML baru yang akan memicu eksekusi JavaScript. 
+	Misalnya, jika konteks XSS adalah sebagai berikut:
+	
+    <script>
+		...
+		var input = 'controllable data here';
+		...
+		</script>
+
+Maka dapat menggunakan Payload berikut untuk keluar dari JavaScript yang ada dan mengeksekusi skrip sendiri:
+
+	</script><img src=1 onerror=alert(document.domain)>
+
+	
+Alasan ini bekerja adalah bahwa browser pertama melakukan parsing HTML untuk mengidentifikasi elemen halaman termasuk blok skrip, dan 
+	hanya kemudian melakukan parsing JavaScript untuk memahami dan mengeksekusi skrip asli. payload di atas membuat skrip asli rusak, 
+	dengan string literal yang tidak terdiminasi. Tapi itu tidak mencegah skrip berikutnya yang diparse dan dieksekusi dengan cara normal.
+
+## Breaking out of a JavaScript string
+
+> LAB Reflected XSS into a JavaScript string with angle brackets HTML encoded
+
+Dalam kasus di mana konteks XSS berada di dalam string literal yang dikutip, seringkali mungkin untuk keluar dari string dan mengeksekusi JavaScript secara langsung. 
+	Sangat penting untuk memperbaiki skrip mengikuti konteks XSS, karena setiap kesalahan sintaks di sana akan mencegah seluruh skrip mengeksekusi.
+
+Beberapa cara yang berguna untuk keluar dari string literal adalah:
+
+		'-alert(document.domain)-'
+		';alert(document.domain)//
+
+> LAB Reflected XSS into a JavaScript string with angle brackets and double quotes HTML-encoded and single quotes escape
+
+Beberapa aplikasi berusaha untuk mencegah masukan dari melanggar string JavaScript dengan melarikan diri karakter kutipan tunggal dengan backslash. 
+	Sebuah backslash sebelum karakter memberitahu para pengurai JavaScript bahwa karakter harus ditafsirkan secara harfiah, dan bukan sebagai karakter khusus seperti pemanggil tali. 
+	Dalam situasi ini, aplikasi sering membuat kesalahan dengan gagal melarikan diri dari karakter backslash itu sendiri. 
+	Ini berarti bahwa penyerang dapat menggunakan karakter backslash mereka sendiri untuk menetralisir backslash yang ditambahkan oleh aplikasi.
+
+Sebagai contoh, anggaplah bahwa input:
+
+	';alert(document.domain)//
+
+akan dikonversi ke:
+
+	\';alert(document.domain)//
+
+Anda sekarang dapat menggunakan payload alternatif:
+
+	\';alert(document.domain)//
+
+yang akan dikonversi ke:
+
+	\\';alert(document.domain)//
+
+Di sini, backslash pertama berarti bahwa backslash kedua ditafsirkan secara harfiah, dan bukan sebagai karakter khusus. 
+		Ini berarti bahwa kutipan sekarang ditafsirkan sebagai terminator string, sehingga serangan berhasil.
+
+> (LAB Reflected XSS in a JavaScript URL with some characters blocked)
+
+	
+Beberapa situs web membuat serangan XSS (Cross-Site Scripting) lebih sulit dilakukan dengan membatasi karakter-karakter yang bisa kamu gunakan. 
+	Ini bisa dilakukan di level situs web atau dengan menggunakan WAF (Web Application Firewall) yang mencegah permintaanmu sampai ke situs tersebut.
+
+Dalam situasi seperti ini, kamu perlu mencari cara lain untuk memanggil fungsi JavaScript tanpa menggunakan cara biasa. 
+	Salah satu caranya adalah menggunakan perintah throw bersama dengan penanganan error (exception handler).
+
+Dengan cara ini, kamu bisa mengirim argumen ke sebuah fungsi tanpa perlu memakai tanda kurung.
+
+Contoh kode: 
+> onerror=alert;throw 1
+
+kode berikut menetapkan fungsi alert() sebagai penangan error global, dan throw digunakan untuk mengirimkan nilai 1 ke fungsi tersebut. 
+			Hasil akhirnya, alert(1) tetap dijalankan, meskipun tanpa memakai tanda kurung secara langsung.
+			
+	onerror = alert;
+
+Ini meng-override fungsi global onerror (global error handler) dengan fungsi alert.
+
+onerror biasanya dipakai browser untuk menangani error JavaScript. Secara default, ia menangani error dalam konsol, tapi di sini diarahkan ke alert, yang akan menampilkan pesan popup.
+
+	throw 1;
+
+Melempar error dengan nilai 1. Ini langsung memicu eksekusi handler onerror.
+
+Karena onerror sekarang adalah alert, maka akan dipanggil alert(1), muncul popup dengan angka 1.
+
+Cara mengeksekusi skrip tanpa tanda kurung: https://portswigger.net/research/xss-without-parentheses-and-semi-colons
+
+## Making use of HTML-encoding
+
+> (LAB Stored XSS into onclick event with angle brackets and double quotes HTML-encoded and single quotes and backslash escaped)
+
+Ketika konteks XSS adalah beberapa JavaScript yang ada dalam atribut tag yang dikutip, seperti event handler, adalah mungkin untuk menggunakan HTML-encoding untuk bekerja di sekitar beberapa filter input.
+
+Ketika browser telah mengurai tag HTML dan atribut dalam respon, itu akan melakukan HTML-decoding nilai atribut tag sebelum mereka diproses lebih lanjut. 
+	Jika aplikasi sisi server memblokir atau membersihkan karakter tertentu yang diperlukan untuk eksploitasi XSS yang sukses, Anda sering dapat melewati validasi input dengan memasukkan HTML-encoding karakter tersebut.
+
+Misalnya, jika konteks XSS adalah sebagai berikut:
+
+	<a href="#" onclick="... var input='controllable data here'; ...">
+
+dan aplikasi memblokir atau lolos dari karakter kutipan tunggal, Anda dapat menggunakan muatan berikut untuk keluar dari string JavaScript dan menjalankan skrip Anda sendiri:
+
+	&apos;-alert(document.domain)-&apos;
+
+The &apos; sequence is an HTML entity representing an apostrophe or single quote. Because the browser HTML-decodes the value of the onclick attribute before the JavaScript is interpreted, 
+	the entities are decoded as quotes, which become string delimiters, and so the attack succeeds
+
+## XSS in JavaScript template literals
+
+  (LAB Reflected XSS into a template literal with angle brackets, single, double quotes, backslash and backticks Unicode-escaped)
+
+Apa itu Template Literals?
+
+Template literals adalah string yang dikelilingi oleh tanda backtick (`) alih-alih tanda kutip biasa ('' atau ""). 
+		Dengan menggunakan template literals, Anda dapat menyisipkan ekspresi JavaScript ke dalam string dengan mudah.
+
+Contoh Penggunaan
+
+		variable:
+				const nama = "Budi";
+				const pesan = `Halo, nama saya ${nama}.`;
+				console.log(pesan); // Output: Halo, nama saya Budi.
+
+Ekspresi dalam Template Literals:
+
+		const a = 5;
+		const b = 10;
+		const hasil = `Jumlah dari ${a} dan ${b} adalah ${a + b}.`;
+		console.log(hasil); // Output: Jumlah dari 5 dan 10 adalah 15.
+
+	   String Multiline:
+
+		const alamat = `Jl. Merdeka No. 1
+				Bogoy, Moon`;
+		console.log(alamat);
+
+Misalnya, skrip berikut akan mencetak pesan selamat datang yang mencakup nama tampilan pengguna:
+	
+		document.getElementById('message').innerText = `Welcome, ${user.displayName}.`;
+
+
+Ketika konteks XSS menjadi template JavaScript literal, tidak perlu mengakhiri literal. Sebagai gantinya, Anda hanya perlu menggunakan sintak ${...} 
+	untuk menanamkan ekspresi JavaScript yang akan dieksekusi saat literal diproses. Misalnya, jika konteks XSS adalah sebagai berikut:
+
+		<script>
+		...
+		var input = `controllable data here`;
+		...
+		</script>
+
+maka Anda dapat menggunakan muatan berikut untuk mengeksekusi JavaScript tanpa mengakhiri template literal:
+
+		${alert(document.domain)}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
