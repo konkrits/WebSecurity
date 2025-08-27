@@ -9,7 +9,11 @@ Laboratorium ini berisi kerentanan scripting cross-site berbasis DOM dalam fungs
 
 ## Analisa:
 
-1. masukan payload ini: <img src=1 onerror=alert(12)> di pencarian
+1. masukan payload ini:
+
+ 		<img src=1 onerror=alert(12)>
+
+> di pencarian
 		
 > ini akan menyebabkan img mencari file 1 dan pasti tidak ada, ketika tidak ada error akan menyebabkan alert()
 	
