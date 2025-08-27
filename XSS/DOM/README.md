@@ -48,7 +48,8 @@ di alam bebas bisa menjadi proses yang membosankan, sering kali mengharuskan And
 ## Memanfaatkan DOM XSS dengan sumber dan sink yang berbeda
  
 > (LAB 1 document.write sink using source location.search)
- 
+> https://github.com/konkrits/WebSecurity/tree/main/XSS/DOM/1%20documentwrite%20sink%20using%20source%20locationsearch
+>  
 Pada prinsipnya, sebuah situs web rentan terhadap skrip lintas situs berbasis DOM jika ada jalur yang dapat dieksekusi di mana data dapat menyebar dari sumber ke sink. 
 	  Pada praktiknya, sumber dan sink yang berbeda memiliki sifat dan perilaku yang berbeda yang dapat memengaruhi kemampuan eksploitasi, dan menentukan teknik apa yang diperlukan. 
 	  Selain itu, skrip situs web mungkin melakukan validasi atau pemrosesan data lainnya yang harus diakomodasi saat mencoba mengeksploitasi kerentanan. 
