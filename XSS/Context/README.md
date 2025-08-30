@@ -15,18 +15,29 @@ Some useful ways of executing JavaScript are:
 	
 	<script>alert(document.domain)</script>
 	<img src=1 onerror=alert(1)>	
-		
+
+> LAB Reflected XSS into HTML context with nothing encoded
+> https://github.com/konkrits/WebSecurity/tree/main/XSS/Reflected/1_Reflected%20XSS%20into%20HTML%20context%20with%20nothing%20encoded
+
+> LAB Stored XSS into HTML context with nothing encoded
+> https://github.com/konkrits/WebSecurity/tree/main/XSS/stored/1%20Stored%20XSS%20into%20HTML%20context%20with%20nothing%20encoded
+
 > LAB Reflected XSS into HTML context with most tags and attributes blocked
-	
+> https://github.com/konkrits/WebSecurity/tree/main/XSS/Reflected/2%20Reflected%20XSS%20into%20HTML%20context%20with%20most%20tags%20and%20attributes%20blocked
+
 > LAB Reflected XSS into HTML context with all tags blocked except custom ones
+> https://github.com/konkrits/WebSecurity/tree/main/XSS/Reflected/5%20Reflected%20XSS%20into%20HTML%20context%20with%20all%20tags%20blocked%20except%20custom%20ones
 
 > LAB Reflected XSS with event handlers and href attributes blocked
+> https://github.com/konkrits/WebSecurity/tree/main/XSS/Reflected/6%20Reflected%20XSS%20with%20event%20handlers%20and%20href%20attributes%20blocked
 
 > LAB Reflected XSS with some SVG markup allowed
+> https://github.com/konkrits/WebSecurity/tree/main/XSS/Reflected/7%20Reflected%20XSS%20with%20some%20SVG%20markup%20allowed
 
 ## XSS in HTML tag attributes	
 	
-> LAB Reflected XSS into attribute with angle brackets HTML-encoded	
+> LAB Reflected XSS into attribute with angle brackets HTML-encoded
+> https://github.com/konkrits/WebSecurity/tree/main/XSS/Reflected/3%20Reflected%20XSS%20into%20attribute%20with%20angle%20brackets%20HTML-encoded
 	
 When the XSS context is into an HTML tag attribute value, you might sometimes be able to terminate the attribute value, close the tag, and introduce a new one. 
 	
@@ -44,7 +55,8 @@ For example:
 The above payload creates an onfocus event that will execute JavaScript when the element receives the focus, and also adds the autofocus attribute to try to trigger the onfocus event 
 		automatically without any user interaction. Finally, it adds x=" to gracefully repair the following markup.
 		
-  ## LAB Stored XSS into anchor href attribute with double quotes HTML-encoded	
+> LAB Stored XSS into anchor href attribute with double quotes HTML-encoded
+> https://github.com/konkrits/WebSecurity/tree/main/XSS/stored/2%20Stored%20XSS%20into%20anchor%20href%20attribute%20with%20double%20quotes%20HTML-encoded
 	
 Kadang-kadang konteks XSS adalah menjadi jenis atribut tag HTML yang dengan sendirinya dapat membuat konteks scriptable. Di sini, 
 	Anda dapat mengeksekusi JavaScript tanpa perlu menghentikan nilai atribut.
@@ -55,7 +67,8 @@ Sebagai contoh:
     <a href="javascript:alert(document.domain)">
 	
 	
-  LAB Reflected XSS in canonical link tag
+> LAB Reflected XSS in canonical link tag
+> https://github.com/konkrits/WebSecurity/tree/main/XSS/Reflected/8%20Reflected%20XSS%20in%20canonical%20link%20tag
 	
 Anda mungkin menemukan situs web yang mengkodekan tanda kurung sudut tetapi masih memungkinkan Anda untuk menyuntikkan atribut. Kadang-kadang, 
 	suntikan ini dimungkinkan bahkan dalam tag yang biasanya tidak menyala secara otomatis, seperti tag kanonik. 
@@ -67,9 +80,10 @@ Anda mungkin menemukan situs web yang mengkodekan tanda kurung sudut tetapi masi
 	
 ## XSS into JavaScript
 
- Terminating the existing script
+- Terminating the existing script
 	
 > LAB Reflected XSS into a JavaScript string with single quote and backslash escaped
+> https://github.com/konkrits/WebSecurity/tree/main/XSS/Reflected/9%20Reflected%20XSS%20into%20a%20JavaScript%20string%20with%20single%20quote%20and%20backslash%20escaped
 
 Dalam kasus yang paling sederhana, adalah mungkin untuk hanya menutup tag skrip yang melampirkan JavaScript yang ada, dan memperkenalkan beberapa tag HTML baru yang akan memicu eksekusi JavaScript. 
 	Misalnya, jika konteks XSS adalah sebagai berikut:
@@ -89,9 +103,10 @@ Alasan ini bekerja adalah bahwa browser pertama melakukan parsing HTML untuk men
 	hanya kemudian melakukan parsing JavaScript untuk memahami dan mengeksekusi skrip asli. payload di atas membuat skrip asli rusak, 
 	dengan string literal yang tidak terdiminasi. Tapi itu tidak mencegah skrip berikutnya yang diparse dan dieksekusi dengan cara normal.
 
-## Breaking out of a JavaScript string
+- Breaking out of a JavaScript string
 
 > LAB Reflected XSS into a JavaScript string with angle brackets HTML encoded
+> https://github.com/konkrits/WebSecurity/tree/main/XSS/Reflected/4%20Reflected%20XSS%20into%20a%20JavaScript%20string%20with%20angle%20brackets%20HTML%20encoded
 
 Dalam kasus di mana konteks XSS berada di dalam string literal yang dikutip, seringkali mungkin untuk keluar dari string dan mengeksekusi JavaScript secara langsung. 
 	Sangat penting untuk memperbaiki skrip mengikuti konteks XSS, karena setiap kesalahan sintaks di sana akan mencegah seluruh skrip mengeksekusi.
@@ -102,6 +117,7 @@ Beberapa cara yang berguna untuk keluar dari string literal adalah:
 		';alert(document.domain)//
 
 > LAB Reflected XSS into a JavaScript string with angle brackets and double quotes HTML-encoded and single quotes escape
+> https://github.com/konkrits/WebSecurity/tree/main/XSS/Reflected/10%20Reflected%20XSS%20into%20a%20JavaScript%20string%20with%20angle%20brackets%20and%20double%20quotes%20HTML-encoded%20and%20single%20quotes%20escaped
 
 Beberapa aplikasi berusaha untuk mencegah masukan dari melanggar string JavaScript dengan melarikan diri karakter kutipan tunggal dengan backslash. 
 	Sebuah backslash sebelum karakter memberitahu para pengurai JavaScript bahwa karakter harus ditafsirkan secara harfiah, dan bukan sebagai karakter khusus seperti pemanggil tali. 
@@ -127,7 +143,8 @@ yang akan dikonversi ke:
 Di sini, backslash pertama berarti bahwa backslash kedua ditafsirkan secara harfiah, dan bukan sebagai karakter khusus. 
 		Ini berarti bahwa kutipan sekarang ditafsirkan sebagai terminator string, sehingga serangan berhasil.
 
-> (LAB Reflected XSS in a JavaScript URL with some characters blocked)
+> LAB Reflected XSS in a JavaScript URL with some characters blocked
+> https://github.com/konkrits/WebSecurity/tree/main/XSS/Reflected/11%20Reflected%20XSS%20in%20a%20JavaScript%20URL%20with%20some%20characters%20blocked
 
 	
 Beberapa situs web membuat serangan XSS (Cross-Site Scripting) lebih sulit dilakukan dengan membatasi karakter-karakter yang bisa kamu gunakan. 
@@ -139,7 +156,8 @@ Dalam situasi seperti ini, kamu perlu mencari cara lain untuk memanggil fungsi J
 Dengan cara ini, kamu bisa mengirim argumen ke sebuah fungsi tanpa perlu memakai tanda kurung.
 
 Contoh kode: 
-> onerror=alert;throw 1
+
+	onerror=alert;throw 1
 
 kode berikut menetapkan fungsi alert() sebagai penangan error global, dan throw digunakan untuk mengirimkan nilai 1 ke fungsi tersebut. 
 			Hasil akhirnya, alert(1) tetap dijalankan, meskipun tanpa memakai tanda kurung secara langsung.
@@ -160,7 +178,8 @@ Cara mengeksekusi skrip tanpa tanda kurung: https://portswigger.net/research/xss
 
 ## Making use of HTML-encoding
 
-> (LAB Stored XSS into onclick event with angle brackets and double quotes HTML-encoded and single quotes and backslash escaped)
+> LAB Stored XSS into onclick event with angle brackets and double quotes HTML-encoded and single quotes and backslash escaped
+> https://github.com/konkrits/WebSecurity/tree/main/XSS/stored/3%20Stored%20XSS%20into%20onclick%20event%20with%20angle%20brackets%20and%20double%20quotes%20HTML-encoded%20and%20single%20quotes%20and%20backslash%20escaped
 
 Ketika konteks XSS adalah beberapa JavaScript yang ada dalam atribut tag yang dikutip, seperti event handler, adalah mungkin untuk menggunakan HTML-encoding untuk bekerja di sekitar beberapa filter input.
 
@@ -175,12 +194,13 @@ dan aplikasi memblokir atau lolos dari karakter kutipan tunggal, Anda dapat meng
 
 	&apos;-alert(document.domain)-&apos;
 
-The &apos; sequence is an HTML entity representing an apostrophe or single quote. Because the browser HTML-decodes the value of the onclick attribute before the JavaScript is interpreted, 
+The `&apos;` sequence is an HTML entity representing an apostrophe or single quote. Because the browser HTML-decodes the value of the onclick attribute before the JavaScript is interpreted, 
 	the entities are decoded as quotes, which become string delimiters, and so the attack succeeds
 
 ## XSS in JavaScript template literals
 
-  (LAB Reflected XSS into a template literal with angle brackets, single, double quotes, backslash and backticks Unicode-escaped)
+> LAB Reflected XSS into a template literal with angle brackets, single, double quotes, backslash and backticks Unicode-escaped
+> https://github.com/konkrits/WebSecurity/tree/main/XSS/Reflected/12%20Reflected%20XSS%20into%20a%20template%20literal%20with%20angle%20brackets%2C%20single%2C%20double%20quotes%2C%20backslash%20and%20backticks%20Unicode-escaped
 
 Apa itu Template Literals?
 
